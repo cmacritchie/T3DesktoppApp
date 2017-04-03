@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="556.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="threaded3.SupplierController">
+   <children>
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="556.0" prefWidth="939.0">
+         <children>
+            <VBox prefHeight="553.0" prefWidth="938.0">
+               <children>
+                  <ImageView fitHeight="117.0" fitWidth="938.0" pickOnBounds="true" preserveRatio="true" />
+                  <HBox prefHeight="438.0" prefWidth="938.0">
+                     <children>
+                        <SplitPane dividerPositions="0.2232905982905983" prefHeight="437.0" prefWidth="943.0">
+                           <items>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <TableView id="tvSuppliers" fx:id="tvSuppliers" layoutX="3.0" prefHeight="433.0" prefWidth="200.0">
+                                       <columns>
+                                          <TableColumn id="supplierId" fx:id="supplierId" prefWidth="75.0" text="SupplierId" />
+                                          <TableColumn id="supplierName" fx:id="supplierName" prefWidth="75.0" text="SupplierName" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                 <children>
+                                    <SplitPane dividerPositions="0.40375586854460094" layoutY="6.0" orientation="VERTICAL" prefHeight="428.0" prefWidth="731.0">
+                                       <items>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                             <children>
+                                                <Label id="lblSuppliers" fx:id="lblSuppliers" layoutX="320.0" layoutY="6.0" text="Suppliers" />
+                                                <TextField id="txtSuppliers" fx:id="txtSuppliers" layoutX="260.0" layoutY="32.0" />
+                                                <Button id="btnAddSupplier" fx:id="btnAddSupplier" layoutX="185.0" layoutY="72.0" mnemonicParsing="false" onAction="#addSupplier" text="Add" />
+                                                <Button id="btnDeleteSupplier" fx:id="btnDeleteSupplier" layoutX="308.0" layoutY="72.0" mnemonicParsing="false" onAction="#deleteSupplier" text="Delete" />
+                                                <Button id="btnUpdateSupplier" fx:id="btnUpdateSupplier" layoutX="416.0" layoutY="72.0" mnemonicParsing="false" onAction="#updateSupplier" text="Update" />
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                             <children>
+                                                <TableView id="tvProdOffer" fx:id="tvProdOffer" layoutX="46.0" layoutY="14.0" prefHeight="228.0" prefWidth="237.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="productOfferId" prefWidth="75.0" text="C1" />
+                                                      <TableColumn fx:id="prodOfferNameName" prefWidth="75.0" text="Products Offered" />
+                                                   </columns>
+                                                </TableView>
+                                                <TableView id="tvProdAvailable" fx:id="tvProdAvailable" layoutX="446.0" layoutY="14.0" prefHeight="228.0" prefWidth="226.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="prodAvailable" prefWidth="75.0" text="Products Available" />
+                                                      <TableColumn fx:id="prodAvailableName" prefWidth="75.0" text="C2" />
+                                                   </columns>
+                                                </TableView>
+                                                <Button id="btnProdAdd" fx:id="btnProdAdd" layoutX="339.0" layoutY="54.0" mnemonicParsing="false" onAction="#addAvailable" text="&lt;=" />
+                                                <Button id="btnProdRemove" fx:id="btnProdRemove" layoutX="339.0" layoutY="113.0" mnemonicParsing="false" onAction="#removeOffered" text="=&gt;" />
+                                             </children>
+                                          </AnchorPane>
+                                       </items>
+                                    </SplitPane>
+                                 </children>
+                              </AnchorPane>
+                           </items>
+                        </SplitPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

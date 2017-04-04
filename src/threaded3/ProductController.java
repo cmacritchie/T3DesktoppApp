@@ -40,7 +40,7 @@ public class ProductController implements Initializable {
 	private TableColumn<Product, String> productName = new TableColumn();
 	
 		
-	
+	private ChangeListener<Object> productItemSelected;
 	
 	
 	@Override
@@ -57,20 +57,24 @@ public class ProductController implements Initializable {
 		tvProducts.setItems(productList);
 		//tvProducts.getSelectionModel().selectFirst();
 		
-		tvProducts.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+		productItemSelected = new ChangeListener<Object>() {
 
 			@Override
-			public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+			public void changed(ObservableValue<?> observableValue, Object oldValue, Object newValue) {
 				// TODO Auto-generated method stub
-				Product selected = tvProducts.getSelectionModel().getSelectedItem();
-				System.out.println(selected);
+				//System.out.println("obVal: " + observableValue);
+				//System.out.println("new" + newValue);
 				
-				txtProduct.setText(selected.getProdName());
+				//Product selected = tvProducts.getSelectionModel().getSelectedItem();
+				//System.out.println("prod:" + selected);
+				
+				txtProduct.setText(((Product)newValue).getProdName());
 				
 				
 			}
 			
-		});
+		};
+		tvProducts.getSelectionModel().selectedItemProperty().addListener(productItemSelected);
 			
 		
 	}
@@ -82,8 +86,10 @@ public class ProductController implements Initializable {
 		String newProd = txtProduct.getText();
 		TravelXDB.AddProduct(newProd);
 		
-		
+		tvProducts.getSelectionModel().selectedItemProperty().removeListener(productItemSelected);
 		tvProducts.setItems(TravelXDB.GetAllProducts());
+		tvProducts.getSelectionModel().selectedItemProperty().addListener(productItemSelected);
+		
 		tvProducts.getSelectionModel().selectFirst();
 		
 	}

@@ -65,6 +65,8 @@ public class SupplierController implements Initializable {
 	@FXML
 	private TableColumn<Product, String> prodAvailableName = new TableColumn();
 	
+	private ChangeListener<Object> supplierSelected;
+	
 	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -97,7 +99,7 @@ public class SupplierController implements Initializable {
 				
 				
 				//listener for table change  BEANs value?
-				tvSuppliers.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+				supplierSelected = new ChangeListener() {
 
 					@Override
 					public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
@@ -121,7 +123,8 @@ public class SupplierController implements Initializable {
 						txtSuppliers.setText(suppselected.getSuppName());
 					}
 					
-				});
+				};
+				tvSuppliers.getSelectionModel().selectedItemProperty().addListener(supplierSelected);
 				
 				//listener to Available Products
 				tvProdAvailable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
@@ -178,7 +181,12 @@ public class SupplierController implements Initializable {
 	@FXML void addSupplier(ActionEvent event)
 	{
 		String newSupplier = txtSuppliers.getText();
+		
 		TravelXDB.AddSupplier(newSupplier);
+		
+		tvSuppliers.getSelectionModel().selectedItemProperty().removeListener(supplierSelected);
+		tvSuppliers.setItems(TravelXDB.GetAllSuppliers());
+		tvSuppliers.getSelectionModel().selectedItemProperty().addListener(supplierSelected);
 	}
 	
 	@FXML void deleteSupplier(ActionEvent event)

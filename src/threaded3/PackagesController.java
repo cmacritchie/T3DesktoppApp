@@ -3,6 +3,7 @@ package threaded3;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -185,11 +186,14 @@ public class PackagesController implements Initializable {
 				Packages selected = tvPackages.getSelectionModel().getSelectedItem();
 				System.out.println(selected);
 				
+				DecimalFormat df = new DecimalFormat("#.00");
+				df.setMaximumFractionDigits(2);
+				
 				 txtPackages.setText(selected.getPkgName());
 				 txtStartDate.setText(selected.getPkgStartDate());
 				 txtEndDate.setText(selected.getPkgEndDate());
-				 txtBasePrice.setText(String.valueOf(selected.getPkgBasePrice()));
-				 txtAgencyCommision.setText(String.valueOf(selected.getPkgAgencyCommision()));
+				 txtBasePrice.setText(String.valueOf(df.format(selected.getPkgBasePrice())));
+				 txtAgencyCommision.setText(String.valueOf(df.format(selected.getPkgAgencyCommision())));
 				 txtDescription.setText(selected.getPkgDesc());
 				
 				

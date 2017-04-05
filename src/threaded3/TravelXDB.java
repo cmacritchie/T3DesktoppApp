@@ -41,8 +41,8 @@ public class TravelXDB {
 			//while there is agents in the select statement
 			while(result.next())
 			{
-				pkg = new Packages(result.getInt(1), result.getString(2), result.getString(3),
-						result.getString(4), result.getString(5), result.getDouble(6), result.getDouble(7));
+				pkg = new Packages(result.getInt(1), result.getString(2), result.getDate(3).toLocalDate().toString(),
+						result.getDate(4).toLocalDate().toString(), result.getString(5), result.getDouble(6), result.getDouble(7));
 				
 				packages.add(pkg);
 			}

@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 //import day7exercise.Agent;
 //import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,11 +36,16 @@ public class PackagesController implements Initializable {
 
 	//declare list of Packages
 	ObservableList<Packages> packagesList;
+	//declare list of suppliers available
+	ObservableList<ProductSupplier> psAvailableList;
+	//declare list included products and suppliers
+	ObservableList<ProductSupplier> psOwnedList;
 	
-	//tabs
-	@FXML TabPane tabPackages;
-	@FXML TabPane tabSupplier;
-	@FXML TabPane tabProducts;
+	
+	
+	//ComboBox
+	
+	@FXML ComboBox<String> cbbProducts = new ComboBox<String>();
 	
 	//labels
 	@FXML Labeled lblPackages; 
@@ -61,7 +67,19 @@ public class PackagesController implements Initializable {
 	//button
 	@FXML Button btnTabSupplier;
 	@FXML Button btnTabProducts;
+	@FXML Button btnNew;
+	@FXML Button btnAdd;
+	@FXML Button btnUpdate;
+	@FXML Button btnDelete;
+	@FXML Button btnCancel;
+	@FXML Button btnChngeleft;
+	@FXML Button btnChngeRight;
 	
+	//package change 
+	String prodSelected = null;
+	Packages Packselected = null;
+	ProductSupplier psSelected = null;
+	ProductSupplier psOwnSelected = null;
 	
 	//table and table columns
     @FXML
@@ -81,8 +99,42 @@ public class PackagesController implements Initializable {
     @FXML
     private TableColumn<Packages, String> packagesDescription = new TableColumn();
     
-    //access Supplier Scene
+    //table for offered products
+    @FXML private TableView<ProductSupplier> tvPSAvailable = new TableView<ProductSupplier>();
+    @FXML private TableColumn<ProductSupplier, String> supplierName = new TableColumn();
     
+    //table for products owned in the package
+    @FXML private TableView<ProductSupplier> tvPSOwned = new TableView<ProductSupplier>();
+    @FXML private TableColumn<ProductSupplier, String> productOwned = new TableColumn();
+    @FXML private TableColumn<ProductSupplier, String> supplierOwned = new TableColumn();
+    
+    
+    //selescts ONLY the names from the observable list
+public static ObservableList<String> ccbReturn(ObservableList<Product> list){
+	
+		ObservableList<String> namesOnly = FXCollections.observableArrayList();	
+		for(Product prod : list) {
+			
+			namesOnly.add(prod.getProdName());
+		}
+		return namesOnly;
+	}
+
+public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> list){
+	
+	ObservableList<Integer> numbersOnly = FXCollections.observableArrayList();	
+	for(Product prod : list) {
+		
+		numbersOnly.add(prod.getProdId());
+	}
+	return numbersOnly;
+	
+}
+    
+    
+    
+    
+    //access Supplier Scene
     @FXML 
     private void TabSupplierAction(ActionEvent event) {
     	
@@ -108,8 +160,35 @@ public class PackagesController implements Initializable {
     	catch (IOException e) {
     		e.printStackTrace();
     	}
+    } 
+    
+    //clears entry boxes
+    @FXML private void Newbutton(ActionEvent event)
+    {
+    txtPackages.setText("");
+    txtStartDate.setText("");
+    txtEndDate.setText("");
+    txtBasePrice.setText("");
+    txtAgencyCommision.setText("");
+    txtDescription.setText("");
+    btnNew.setText("Cancel");
+    
+    //make add clickable
+   //make cancel clickabl
+    
+    //make delete and update unclickable
+   
+    
+    
     }
     
+    //for the add new
+    @FXML private void AddButton(ActionEvent event)
+    {
+    	
+    }
+    
+    //products products tab
     @FXML 
     private void TabProducts(ActionEvent event) {
     	
@@ -139,16 +218,14 @@ public class PackagesController implements Initializable {
     }
   
 	
-	
+	//Initializes program 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		// TODO Auto-generated method stub
-		System.out.println("Instance Initialized");
-		
+			
+		//gets list of all packages
 		packagesList = TravelXDB.GetAllPackages();
 		
-		
-	
+		//sets packaged column id to Packages property names
 		packagesID.setCellValueFactory(new PropertyValueFactory<Packages, Integer>("PackageId"));
         packagesName.setCellValueFactory(new PropertyValueFactory<Packages, String>("PkgName"));
         packagesStartDate.setCellValueFactory(new PropertyValueFactory<Packages, String>("PkgStartDate"));
@@ -157,48 +234,107 @@ public class PackagesController implements Initializable {
         packagesAgencyCommission.setCellValueFactory(new PropertyValueFactory<Packages, Double>("PkgAgencyCommision"));
         packagesDescription.setCellValueFactory(new PropertyValueFactory<Packages, String>("PkgDesc"));
         
-        System.out.println(packagesList);
+        //owned products and suppliers
+        productOwned.setCellValueFactory(new PropertyValueFactory<ProductSupplier, String>("ProdName"));
+		supplierOwned.setCellValueFactory(new PropertyValueFactory<ProductSupplier, String>("SuppName"));
+		
+		//available Suppliers based on Products
+		supplierName.setCellValueFactory(new PropertyValueFactory<ProductSupplier, String>("SuppName"));
+        
+        //sets packages table to the packages list
         tvPackages.setItems(packagesList);
         
-        Packages selected = tvPackages.getSelectionModel().getSelectedItem();
-		System.out.println(selected);
-		
-		//tab change listener
-	/*	tabSupplier.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-		    @Override
-		    public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
-		    	System.out.println("Supplier Tab Selected");
-		    }
-		}); */
-		
-		
-		
-		
+        //sets comboBox
+      //List for combobox Products
+    	ObservableList<Product> psProducts = TravelXDB.GetAllProducts();
+    	cbbProducts.setItems(ccbReturn(psProducts));
+    	//cbbProducts.setValue(psProducts));
+    	
         
+        //delete this?
+        // Packselected = tvPackages.getSelectionModel().getSelectedItem();
+		System.out.println(Packselected);  
         
-		//listener selection change
+		//Listens to table selection change to update the text fields based on the package seleected 
 	  tvPackages.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
 		    
-			@Override
+		  	@Override
 			public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-				// TODO Auto-generated method stub
-				Packages selected = tvPackages.getSelectionModel().getSelectedItem();
-				System.out.println(selected);
 				
-				 txtPackages.setText(selected.getPkgName());
-				 txtStartDate.setText(selected.getPkgStartDate());
-				 txtEndDate.setText(selected.getPkgEndDate());
-				 txtBasePrice.setText(String.valueOf(selected.getPkgBasePrice()));
-				 txtAgencyCommision.setText(String.valueOf(selected.getPkgAgencyCommision()));
-				 txtDescription.setText(selected.getPkgDesc());
+		  		//sets package object to selected row
+				 Packselected = tvPackages.getSelectionModel().getSelectedItem();
 				
+				 //sets selectable packages to 
+				 txtPackages.setText(Packselected.getPkgName());
+				 txtStartDate.setText(Packselected.getPkgStartDate());
+				 txtEndDate.setText(Packselected.getPkgEndDate());
+				 txtBasePrice.setText(String.valueOf(Packselected.getPkgBasePrice()));
+				 txtAgencyCommision.setText(String.valueOf(Packselected.getPkgAgencyCommision()));
+				 txtDescription.setText(Packselected.getPkgDesc());
+				 
+				 psOwnedList = TravelXDB.getPSNamed(Packselected.getPackgeId());
+				 tvPSOwned.setItems(psOwnedList);
+				 
+				 
+				// Packages packSelected = tvPackages.getSelectionModel().getSelectedItem();
+				
+				 
 				
 			}
 	     });
+	  
+	  //products and suppliers assigned to the packages
+	  tvPSOwned.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+
+		@Override
+		public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 		
-	// SupplierController.sudo_initialize();
+			psOwnSelected = tvPSOwned.getSelectionModel().getSelectedItem();
+			
+		}
+			
+		});
+		
+	  //products and suppliers available to the packages
+	  tvPSAvailable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+
+		@Override
+		public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+			// TODO Auto-generated method stub
+			
+			 psSelected = tvPSAvailable.getSelectionModel().getSelectedItem();
+			
+			//psAvailableList = TravelXDB.getOffProdSupply(ProdName, Packageid)
+			
+		}
+			
+		});
+	  
+	  
 	
 	}
+	//change on the ComboBox
+	  @FXML void Product_change(ActionEvent event)
+	  {
+		String prodSelected = cbbProducts.getSelectionModel().getSelectedItem();
+		
+		psAvailableList = TravelXDB.getOffProdSupply(prodSelected, Packselected.getPackgeId());
+		//System.out.println(prodSelected + ' ' + Packselected.getPackgeId() + ' ' + psSelected.getProdSupplier() );
+		tvPSAvailable.setItems(psAvailableList);
+		
+	  }
+	  
+	  //moves available products to the the Package
+	  @FXML void move_left(ActionEvent event)
+	  {
+		  TravelXDB.Addps(psSelected.getProdSupplier(), Packselected.getPackgeId());
+		  
+	  }
+	  
+	  @FXML void move_right(ActionEvent event)
+	  {
+		  TravelXDB.Deleteps(psOwnSelected.getProdSupplier(), Packselected.getPackgeId());
+	  }
 }
 
  

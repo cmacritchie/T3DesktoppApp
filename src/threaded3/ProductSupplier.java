@@ -1,5 +1,7 @@
 package threaded3;
 
+import javafx.collections.ObservableList;
+
 public class ProductSupplier {
 
 	//fields
@@ -8,6 +10,7 @@ public class ProductSupplier {
 	private int SuppId; // supplier id
 	private String ProdName;
 	private String SuppName;
+	//private int PackageId;  //added late
 	
 	
 	
@@ -67,6 +70,14 @@ public class ProductSupplier {
 	public void setSuppName(String suppName) {
 		SuppName = suppName;
 	}
+	
+//	public int getPackageId() {
+//		return PackageId;
+//	}
+	
+//	public void setPackageId(int packageid) {
+//		PackageId =packageid;
+//	}
 
 
 	//toString method... just in case
@@ -75,6 +86,10 @@ public class ProductSupplier {
 		return "ProductSupplier [ProdSupplier=" + ProdSupplier + ", ProdId=" + ProdId + ", SuppId=" + SuppId
 				+ ", ProdName=" + ProdName + ", SuppName=" + SuppName + "]";
 	}
+	
+	
+	
+	
 	
 	
 	

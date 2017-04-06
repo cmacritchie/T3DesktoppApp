@@ -17,6 +17,7 @@ public class Packages {
 	private String PkgDesc;
 	private double PkgBasePrice;
 	private double PkgAgencyCommision;
+	
 	//private SimpleDateFormat PkgStartDate;
 
 	

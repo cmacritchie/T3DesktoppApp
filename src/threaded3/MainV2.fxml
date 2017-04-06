@@ -41,7 +41,7 @@
                            <items>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
-                                    <Pane layoutX="-232.0" layoutY="-1.0" prefHeight="470.0" prefWidth="700.0">
+                                    <Pane id="btnNew" layoutX="-232.0" layoutY="-1.0" prefHeight="470.0" prefWidth="700.0">
                                        <children>
                                           <Label id="lblPackageName" fx:id="lblPackageName" layoutX="250.0" layoutY="42.0" text="Package Name" />
                                           <TextField id="txtPackageName" fx:id="txtPackages" layoutX="250.0" layoutY="67.0" promptText="txtPackageName" />
@@ -61,7 +61,7 @@
                               </AnchorPane>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
-                                    <TableView fx:id="tvPackages" layoutX="-1.0" prefHeight="228.0" prefWidth="547.0">
+                                    <TableView fx:id="tvPackages" layoutX="-1.0" prefHeight="171.0" prefWidth="547.0">
                                        <columns>
                                           <TableColumn fx:id="packagesID" prefWidth="75.0" text="Package ID" />
                                           <TableColumn fx:id="packagesName" prefWidth="75.0" text="Package Name" />
@@ -72,6 +72,20 @@
                                           <TableColumn fx:id="packagesDescription" prefWidth="75.0" text="Description" />
                                        </columns>
                                     </TableView>
+                                    <TableView fx:id="tvPSOwned" layoutX="14.0" layoutY="189.0" prefHeight="200.0" prefWidth="200.0">
+                                      <columns>
+                                        <TableColumn fx:id="productOwned" prefWidth="98.0" text="C1" />
+                                        <TableColumn fx:id="supplierOwned" prefWidth="101.0" text="C2" />
+                                      </columns>
+                                    </TableView>
+                                    <TableView fx:id="tvPSAvailable" layoutX="298.0" layoutY="208.0" prefHeight="189.0" prefWidth="234.0">
+                                      <columns>
+                                        <TableColumn fx:id="supplierName" prefWidth="233.0" text="C1" />
+                                      </columns>
+                                    </TableView>
+                                    <ComboBox fx:id="cbbProducts" layoutX="312.0" layoutY="177.0" onAction="#Product_change" prefWidth="150.0" />
+                                    <Button fx:id="btnChngeleft" layoutX="234.0" layoutY="241.0" mnemonicParsing="false" onAction="#move_left" text="&lt;&lt;" />
+                                    <Button fx:id="btnChngeRight" layoutX="234.0" layoutY="303.0" mnemonicParsing="false" onAction="#move_right" text="&gt;&gt;" />
                                  </children>
                               </AnchorPane>
                            </items>

@@ -11,12 +11,14 @@ public class Product {
 		
 	}
 
+	//constructor
 	public Product(int prodId, String prodName) {
 		super();
 		ProdId = prodId;
 		ProdName = prodName;
 	}
 
+	//getter and setters
 	public int getProdId() {
 		return ProdId;
 	}

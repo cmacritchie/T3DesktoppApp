@@ -57,6 +57,116 @@ public class TravelXDB {
 		return packages;
 	}
 	
+	//add availableProduct Suppliers to a package
+	public static void Addps(int psID, int packageid)
+	{
+		try(Connection connection = DriverManager.getConnection(url, username, password))
+		{
+			String addPack = "insert into " +
+					 		 "Packages_Products_Suppliers (PackageId, ProductSupplierId) "+
+					 		 "Values(?, ?)";
+		PreparedStatement addstate = connection.prepareStatement(addPack);
+		addstate.setInt(1, packageid);
+		addstate.setInt(2, psID);
+		addstate.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	//deletes Available PRoduct Suppliers from Packages (moves them back to available
+	public static void Deleteps(int psID, int packageid)
+	{
+		try(Connection connection = DriverManager.getConnection(url, username, password))
+		{
+			String deletePack = "DELETE FROM Packages_Products_Suppliers " +
+								"WHERE PackageId = ? " +
+								"AND ProductSupplierId = ?";
+			PreparedStatement deleteState = connection.prepareStatement(deletePack);
+			deleteState.setInt(1, packageid);
+			deleteState.setInt(2, psID);
+			deleteState.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	/*
+	
+	//gets linking Packages
+	public static List<PPS> getPPS(int packageid)
+	{
+		List<PPS> ppsList = new ArrayList<PPS>();
+		PPS link =null;
+		try(Connection connection = DriverManager.getConnection(url, username, password))
+		{
+			String selectLinks ="select * From Packages_Products_Suppliers where PackageId = ?";
+			PreparedStatement selectState = connection.prepareStatement(selectLinks);
+			selectState.setInt(1, packageid);
+			
+			ResultSet resreader = selectState.executeQuery();
+			
+			while(resreader.next())
+			{
+				link = new PPS(resreader.getInt(1), resreader.getInt(2));
+				ppsList.add(link);
+			}
+			
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		System.out.println(ppsList);
+		return ppsList;
+	} */
+	
+	//gets product and suppliers that are associated with the package
+	public static ObservableList<ProductSupplier> getPSNamed(int packageid)
+	{
+		ObservableList<ProductSupplier> psList = FXCollections.observableArrayList();
+		ProductSupplier ps = null;
+		
+		try(Connection connection = DriverManager.getConnection(url, username, password))
+		{
+			String select = "Select ps.ProductSupplierId, p.ProductId, s.SupplierId, p.ProdName, s.SupName " +
+							"From Suppliers s " +
+							"inner join Products_Suppliers ps " +
+							"on s.SupplierId = ps.SupplierId " +
+							"inner join Products p " +
+							"on p.ProductId = ps.ProductId " +
+							"inner join Packages_Products_Suppliers pps " +
+							"on ps.ProductSupplierId = pps.ProductSupplierId " +
+							"where PackageId = ?";
+			PreparedStatement selectState = connection.prepareStatement(select);
+			selectState.setInt(1, packageid);
+			ResultSet resReader = selectState.executeQuery();
+			while(resReader.next())
+			{
+				
+				ps = new ProductSupplier(resReader.getInt(1), resReader.getInt(2), resReader.getInt(3), resReader.getString(4), resReader.getString(5));
+				psList.add(ps);
+			}
+			
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return psList;
+	}
+	
+	
+	
 	//this method gets the agent based off their id
 		public static Packages GetPackageID(int packageid)
 		{
@@ -91,8 +201,54 @@ public class TravelXDB {
 			return selectedPackage;
 		}
 		
+		//add new Package
 		
+		public static void AddPackage(String packageName, String startDate, String endDate, String Description, double BasePrice, double commision )
+		{
+			try(Connection connection = DriverManager.getConnection(url, username, password))
+			{
+			String addPackage = "INSERT"; //finish sql string
+			
+			PreparedStatement addState = connection.prepareStatement(addPackage);
+			//addState.setString(1,  );
+			//addState.setString(1,  );
+			//addState.setString(1,  );
+			//addState.setString(1,  );
+			//addState.setString(1,  );
+			//addState.setString(1,  );
+			//addState.setString(1,  );
+				
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+					
+		}
 		
+		//update Package
+		public static void UpdatePackage()
+		{
+			
+		}
+		
+		//Delete Package
+		public static void DeletePackage(int packageid)
+		{
+			try(Connection connection = DriverManager.getConnection(url, username, password))
+			{
+				String deletePackage = "DELETE FROM Packages WHERE PackageId =?";
+				
+				PreparedStatement deleteState = connection.prepareStatement(deletePackage);
+				deleteState.setInt(1, packageid);
+				deleteState.executeUpdate();
+				System.out.println("package deleted");
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		
 		
 		//Suppliers This portion handles all the method for the suppliers scene
@@ -199,7 +355,7 @@ public class TravelXDB {
 			}
 		}
 		
-		//delete Products_supplier
+		//delete Products_supplier  //also delete product suppliers?
 		public static void DeleteProductsSupplier(int supplierid)
 		{
 			try(Connection connection = DriverManager.getConnection(url, username, password))
@@ -235,7 +391,53 @@ public class TravelXDB {
 			}
 		}
 		
-		
+		//Get all Suppliers not included in the product suppliers
+		public static ObservableList<ProductSupplier> getOffProdSupply(String ProdName, int Packageid)
+		{
+			ObservableList<ProductSupplier> psPackageAvailable = FXCollections.observableArrayList();
+			
+			ProductSupplier ps = null;
+			
+			try(Connection connection = DriverManager.getConnection(url, username, password))
+			{
+				String getSelect = "SELECT ps.ProductSupplierId, p.ProductId, s.SupplierId, p.ProdName, s.SupName " + 
+						 "FROM Products_Suppliers ps " +
+						 "left join Packages_Products_Suppliers pps " +
+						 "on  ps.ProductSupplierId = pps.ProductSupplierId " +
+						 "inner join Products p " +
+						 "on p.ProductId = ps.ProductId " +
+						 "inner join Suppliers s " +
+						 "on s.SupplierId = ps.SupplierId " +
+						 "where p.ProdName = ? " +
+						 "and (PackageId != ? " +
+						 "OR PackageId IS NULL)";
+				System.out.println("foo");
+				PreparedStatement selectState = connection.prepareStatement(getSelect);
+				System.out.println("bar");
+				selectState.setString(1, ProdName);
+				selectState.setInt(2, Packageid);
+				System.out.println("ram");
+				
+				ResultSet result = selectState.executeQuery();
+				System.out.println("do");
+				while(result.next())
+				{
+					ps = new ProductSupplier(result.getInt(1),
+							                 result.getInt(2),
+							                 result.getInt(3),
+							                 result.getString(4),
+							                 result.getString(5));
+					
+					psPackageAvailable.add(ps);
+				}
+				System.out.println("yow");		
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			return psPackageAvailable;
+		}
 		
 		
 		

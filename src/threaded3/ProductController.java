@@ -70,7 +70,6 @@ public class ProductController implements Initializable {
 				
 				txtProduct.setText(((Product)newValue).getProdName());
 				
-				
 			}
 			
 		};
@@ -86,12 +85,9 @@ public class ProductController implements Initializable {
 		String newProd = txtProduct.getText();
 		TravelXDB.AddProduct(newProd);
 		
-		tvProducts.getSelectionModel().selectedItemProperty().removeListener(productItemSelected);
-		tvProducts.setItems(TravelXDB.GetAllProducts());
-		tvProducts.getSelectionModel().selectedItemProperty().addListener(productItemSelected);
+		updateTVProducts();
 		
-		tvProducts.getSelectionModel().selectFirst();
-		
+		tvProducts.getSelectionModel().selectLast();
 	}
 	
 	@FXML void deleteProduct(ActionEvent event)
@@ -100,16 +96,29 @@ public class ProductController implements Initializable {
 		
 		TravelXDB.DeleteProduct(selected.getProdId());
 		//getting an error here
-		tvProducts.setItems(TravelXDB.GetAllProducts());
+		updateTVProducts();
 		
+		tvProducts.getSelectionModel().selectFirst();
 	}
 	@FXML void updateProduct(ActionEvent event)
 	{
 		String updateProd = txtProduct.getText();
 		Product selected = tvProducts.getSelectionModel().getSelectedItem();
 		
-		TravelXDB.UpdateProduct(selected.getProdId(), updateProd);
-		tvProducts.setItems(TravelXDB.GetAllProducts());
+		int index = tvProducts.getSelectionModel().getFocusedIndex();
 		
+		TravelXDB.UpdateProduct(selected.getProdId(), updateProd);
+		
+		updateTVProducts();
+		
+		
+		tvProducts.getSelectionModel().select(index);
+	}
+	
+	private void updateTVProducts()
+	{
+		tvProducts.getSelectionModel().selectedItemProperty().removeListener(productItemSelected);
+		tvProducts.setItems(TravelXDB.GetAllProducts());
+		tvProducts.getSelectionModel().selectedItemProperty().addListener(productItemSelected);
 	}
 }

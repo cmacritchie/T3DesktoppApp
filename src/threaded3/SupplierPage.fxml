@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="556.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="threaded3.SupplierController">
+<AnchorPane prefHeight="556.0" prefWidth="939.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="threaded3.SupplierController">
    <children>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="556.0" prefWidth="939.0">
          <children>

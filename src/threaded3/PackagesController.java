@@ -261,8 +261,10 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
 		    
 		  	@Override
 			public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-				
-<<<<<<< HEAD
+
+		  		DecimalFormat df = new DecimalFormat("#.00");
+				df.setMaximumFractionDigits(2);
+		  		
 		  		//sets package object to selected row
 				 Packselected = tvPackages.getSelectionModel().getSelectedItem();
 				
@@ -270,8 +272,8 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
 				 txtPackages.setText(Packselected.getPkgName());
 				 txtStartDate.setText(Packselected.getPkgStartDate());
 				 txtEndDate.setText(Packselected.getPkgEndDate());
-				 txtBasePrice.setText(String.valueOf(Packselected.getPkgBasePrice()));
-				 txtAgencyCommision.setText(String.valueOf(Packselected.getPkgAgencyCommision()));
+				 txtBasePrice.setText(String.valueOf(df.format(Packselected.getPkgBasePrice())));
+				 txtAgencyCommision.setText(String.valueOf(df.format(Packselected.getPkgAgencyCommision())));
 				 txtDescription.setText(Packselected.getPkgDesc());
 				 
 				 psOwnedList = TravelXDB.getPSNamed(Packselected.getPackgeId());
@@ -279,19 +281,7 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
 				 
 				 
 				// Packages packSelected = tvPackages.getSelectionModel().getSelectedItem();
-=======
-				DecimalFormat df = new DecimalFormat("#.00");
-				df.setMaximumFractionDigits(2);
-				
-				 txtPackages.setText(selected.getPkgName());
-				 txtStartDate.setText(selected.getPkgStartDate());
-				 txtEndDate.setText(selected.getPkgEndDate());
-				 txtBasePrice.setText(String.valueOf(df.format(selected.getPkgBasePrice())));
-				 txtAgencyCommision.setText(String.valueOf(df.format(selected.getPkgAgencyCommision())));
-				 txtDescription.setText(selected.getPkgDesc());
->>>>>>> master
-				
-				 
+			 
 				
 			}
 	     });

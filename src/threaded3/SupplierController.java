@@ -184,9 +184,8 @@ public class SupplierController implements Initializable {
 		
 		TravelXDB.AddSupplier(newSupplier);
 		
-		tvSuppliers.getSelectionModel().selectedItemProperty().removeListener(supplierSelected);
-		tvSuppliers.setItems(TravelXDB.GetAllSuppliers());
-		tvSuppliers.getSelectionModel().selectedItemProperty().addListener(supplierSelected);
+		updateTVSuppliers ();
+		txtSuppliers.setText("");
 	}
 	
 	@FXML void deleteSupplier(ActionEvent event)
@@ -195,6 +194,8 @@ public class SupplierController implements Initializable {
 		TravelXDB.DeleteProductsSupplier(selected.getSuppId());
 		TravelXDB.DeleteSupplier(selected.getSuppId());
 		
+		updateTVSuppliers ();
+		txtSuppliers.setText("");
 	}
 	
 	@FXML void updateSupplier(ActionEvent event)
@@ -203,5 +204,15 @@ public class SupplierController implements Initializable {
 		String updateName = txtSuppliers.getText();
 		TravelXDB.UpdateSupplier(selected.getSuppId(), updateName);
 		
+		updateTVSuppliers ();
+		txtSuppliers.setText("");
 	}
+	
+	private void updateTVSuppliers ()
+	{
+		tvSuppliers.getSelectionModel().selectedItemProperty().removeListener(supplierSelected);
+		tvSuppliers.setItems(TravelXDB.GetAllSuppliers());
+		tvSuppliers.getSelectionModel().selectedItemProperty().addListener(supplierSelected);
+	}
+
 }

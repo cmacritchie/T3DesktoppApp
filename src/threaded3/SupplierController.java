@@ -66,6 +66,7 @@ public class SupplierController implements Initializable {
 	private TableColumn<Product, String> prodAvailableName = new TableColumn();
 	
 	private ChangeListener<Object> supplierSelected;
+	private ChangeListener<Object> supplierProducts;
 	
 	
 	@Override
@@ -127,7 +128,7 @@ public class SupplierController implements Initializable {
 				tvSuppliers.getSelectionModel().selectedItemProperty().addListener(supplierSelected);
 				
 				//listener to Available Products
-				tvProdAvailable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+				supplierProducts = new ChangeListener() {
 
 					@Override
 					public void changed(ObservableValue arg0, Object arg1, Object arg2) {
@@ -138,13 +139,13 @@ public class SupplierController implements Initializable {
 						//TravelXDB.AddAvailProducts(prodSelected.getProdId(), suppselected.getSuppId());
 					}
 						
-				}); 
+				}; 
 				
-				
+				tvProdAvailable.getSelectionModel().selectedItemProperty().addListener(supplierProducts);
 			
 				
 			
-		
+				
 	}
 	
 	//Product prodSelected = tvProdAvailable.getSelectionModel().getSelectedItem();
@@ -165,6 +166,14 @@ public class SupplierController implements Initializable {
 		TravelXDB.GetOfferedProducts(suppselected.getSuppId());
 		
 		
+		//Turning off change listener when a supplier changes products available
+		tvProdAvailable.getSelectionModel().selectedItemProperty().removeListener(supplierProducts);
+		tvProdAvailable.setItems(TravelXDB.GetAvailableProducts(suppselected.getSuppId()));
+		tvProdAvailable.getSelectionModel().selectedItemProperty().addListener(supplierProducts);
+		
+		tvProdOffer.getSelectionModel().selectedItemProperty().removeListener(supplierProducts);
+		tvProdOffer.setItems(TravelXDB.GetOfferedProducts(suppselected.getSuppId()));
+		tvProdOffer.getSelectionModel().selectedItemProperty().addListener(supplierProducts);
 	}
 	
 	@FXML void removeOffered(ActionEvent event)
@@ -175,6 +184,14 @@ public class SupplierController implements Initializable {
 		
 		TravelXDB.RemoveOfferProducts(prodSelected.getProdId(), suppselected.getSuppId());
 		
+		//Turning off change listener when a supplier changes products available
+		tvProdAvailable.getSelectionModel().selectedItemProperty().removeListener(supplierProducts);
+		tvProdAvailable.setItems(TravelXDB.GetAvailableProducts(suppselected.getSuppId()));
+		tvProdAvailable.getSelectionModel().selectedItemProperty().addListener(supplierProducts);
+		
+		tvProdOffer.getSelectionModel().selectedItemProperty().removeListener(supplierProducts);
+		tvProdOffer.setItems(TravelXDB.GetOfferedProducts(suppselected.getSuppId()));
+		tvProdOffer.getSelectionModel().selectedItemProperty().addListener(supplierProducts);
 	}
 
 	
@@ -186,6 +203,8 @@ public class SupplierController implements Initializable {
 		
 		updateTVSuppliers ();
 		txtSuppliers.setText("");
+		
+		tvSuppliers.scrollTo(tvSuppliers.getItems().size()-1);
 	}
 	
 	@FXML void deleteSupplier(ActionEvent event)
@@ -196,16 +215,24 @@ public class SupplierController implements Initializable {
 		
 		updateTVSuppliers ();
 		txtSuppliers.setText("");
+		
+		tvSuppliers.scrollTo(0);
 	}
 	
 	@FXML void updateSupplier(ActionEvent event)
 	{
 		Supplier selected = tvSuppliers.getSelectionModel().getSelectedItem();
 		String updateName = txtSuppliers.getText();
+		
+		int index = tvSuppliers.getSelectionModel().getFocusedIndex();
+		
 		TravelXDB.UpdateSupplier(selected.getSuppId(), updateName);
 		
 		updateTVSuppliers ();
 		txtSuppliers.setText("");
+		
+		tvSuppliers.getSelectionModel().select(index);
+		tvSuppliers.scrollTo(index);
 	}
 	
 	private void updateTVSuppliers ()

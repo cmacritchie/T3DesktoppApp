@@ -4,6 +4,8 @@ package threaded3;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -22,6 +24,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -108,6 +111,9 @@ public class PackagesController implements Initializable {
     @FXML private TableView<ProductSupplier> tvPSOwned = new TableView<ProductSupplier>();
     @FXML private TableColumn<ProductSupplier, String> productOwned = new TableColumn();
     @FXML private TableColumn<ProductSupplier, String> supplierOwned = new TableColumn();
+    
+    @FXML private DatePicker dp_start = new DatePicker();
+    @FXML private DatePicker dp_end = new DatePicker();
     
     
     //selescts ONLY the names from the observable list
@@ -200,7 +206,7 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
     	try {
     		root = FXMLLoader.load(getClass().getResource("ProductsPage.fxml"));
     		Stage stage = new Stage();
-    		stage.setTitle("Suppliers");
+    		stage.setTitle("Products");
     		stage.setScene(new Scene(root));
     		
     		Window existingWindow = ((Node) event.getSource()).getScene().getWindow();
@@ -249,6 +255,7 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
       //List for combobox Products
     	ObservableList<Product> psProducts = TravelXDB.GetAllProducts();
     	cbbProducts.setItems(ccbReturn(psProducts));
+    	//cbbProducts.getSelectionModel().selectFirst();
     	//cbbProducts.setValue(psProducts));
     	
         
@@ -282,7 +289,14 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
 				 
 				// Packages packSelected = tvPackages.getSelectionModel().getSelectedItem();
 			 
+				/*
+				 * DatePicker for start and end date
+				 */
+				String start = Packselected.getPkgStartDate();
+				dp_start.setValue(LocalDate.of(Integer.parseInt(start.substring(0, 4)), Integer.parseInt(start.substring(5, 7)), Integer.parseInt(start.substring(8, 10))));
 				
+				String end = Packselected.getPkgEndDate();
+				dp_end.setValue(LocalDate.of(Integer.parseInt(end.substring(0, 4)), Integer.parseInt(end.substring(5, 7)), Integer.parseInt(end.substring(8, 10))));
 			}
 	     });
 	  
@@ -314,7 +328,13 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
 		});
 	  
 	  
-	
+	  
+	  /*
+	   * Set focus to the first item in the package table
+	   */
+	  tvPackages.requestFocus();
+	  tvPackages.getSelectionModel().select(0);
+	  tvPackages.getFocusModel().focus(0);
 	}
 	//change on the ComboBox
 	  @FXML void Product_change(ActionEvent event)

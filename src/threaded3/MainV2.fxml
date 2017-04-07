@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="567.0" prefWidth="952.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="threaded3.PackagesController">
+<AnchorPane prefHeight="567.0" prefWidth="952.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="threaded3.PackagesController">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="940.0">
          <children>
@@ -56,6 +57,8 @@
                                           <TextField id="txtEndDate" fx:id="txtEndDate" layoutX="432.0" layoutY="127.0" promptText="txtEndDate" />
                                           <TextField id="txtDescription" fx:id="txtDescription" layoutX="250.0" layoutY="249.0" prefHeight="62.0" prefWidth="335.0" promptText="txtDescription" />
                                           <Label id="lblDescription" fx:id="lblDescription" layoutX="250.0" layoutY="225.0" text="Description" />
+                                          <DatePicker fx:id="dp_start" layoutX="250.0" layoutY="305.0" />
+                                          <DatePicker fx:id="dp_end" layoutX="432.0" layoutY="305.0" />
                                        </children>
                                     </Pane>
                                  </children>

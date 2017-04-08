@@ -75,7 +75,7 @@ public class ProductController implements Initializable {
 		};
 		tvProducts.getSelectionModel().selectedItemProperty().addListener(productItemSelected);
 			
-		
+		tvProducts.getSelectionModel().selectFirst();
 	}
 
 	@FXML void addNewProduct(ActionEvent event)

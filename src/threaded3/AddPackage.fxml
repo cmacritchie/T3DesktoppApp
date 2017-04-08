@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="556.0" prefWidth="939.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Text fx:id="lbl_Name" layoutX="69.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" wrappingWidth="98.13671875">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="lbl_startDate" layoutX="69.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" wrappingWidth="98.13671875">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="lbl_EndDate" layoutX="69.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date" wrappingWidth="98.13671875">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="lbl_Description" layoutX="69.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="98.13671875">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="lbl_BasePrice" layoutX="508.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Base Price" wrappingWidth="98.13671875">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="lbl_Commission" layoutX="508.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commission" wrappingWidth="98.13671875">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="txt_Name" layoutX="69.0" layoutY="89.0" />
+      <TextField fx:id="txt_Price" layoutX="508.0" layoutY="89.0" />
+      <TextField fx:id="txt_Commission" layoutX="508.0" layoutY="146.0" />
+      <DatePicker fx:id="dp_start" layoutX="69.0" layoutY="159.0" />
+      <DatePicker fx:id="dp_end" layoutX="69.0" layoutY="239.0" />
+      <TextArea fx:id="ta_description" layoutX="67.0" layoutY="315.0" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>

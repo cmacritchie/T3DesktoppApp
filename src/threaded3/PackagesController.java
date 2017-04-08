@@ -28,6 +28,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -153,6 +154,7 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
     		Stage stage = new Stage();
     		stage.setTitle("Suppliers");
     		stage.setScene(new Scene(root));
+    		stage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
     		
     		Window existingWindow = ((Node) event.getSource()).getScene().getWindow();
     		
@@ -208,6 +210,7 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
     		Stage stage = new Stage();
     		stage.setTitle("Products");
     		stage.setScene(new Scene(root));
+    		stage.getIcons().add(new Image(getClass().getResource("icon.png").toExternalForm()));
     		
     		Window existingWindow = ((Node) event.getSource()).getScene().getWindow();
     		
@@ -335,6 +338,13 @@ public static ObservableList<Integer> ccbValueReturn(ObservableList<Product> lis
 	  tvPackages.requestFocus();
 	  tvPackages.getSelectionModel().select(0);
 	  tvPackages.getFocusModel().focus(0);
+	  
+	  /*
+	   * This repeats code from Product_change function below but quickest way to initialize and setup combobox and PSAvailable tableview.
+	   */
+	  cbbProducts.getSelectionModel().selectFirst();
+	  psAvailableList = TravelXDB.getOffProdSupply(cbbProducts.getSelectionModel().getSelectedItem(), Packselected.getPackgeId());
+	  tvPSAvailable.setItems(psAvailableList);
 	}
 	//change on the ComboBox
 	  @FXML void Product_change(ActionEvent event)

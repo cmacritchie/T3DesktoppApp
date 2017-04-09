@@ -66,6 +66,7 @@ public class SupplierController implements Initializable {
 	private TableColumn<Product, String> prodAvailableName = new TableColumn();
 	
 	private ChangeListener<Object> supplierSelected;
+	private ChangeListener<Object> supplierProducts;
 	
 	
 	@Override
@@ -126,8 +127,9 @@ public class SupplierController implements Initializable {
 				};
 				tvSuppliers.getSelectionModel().selectedItemProperty().addListener(supplierSelected);
 				
+				
 				//listener to Available Products
-				tvProdAvailable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+				supplierProducts = new ChangeListener() {
 
 					@Override
 					public void changed(ObservableValue arg0, Object arg1, Object arg2) {
@@ -138,13 +140,13 @@ public class SupplierController implements Initializable {
 						//TravelXDB.AddAvailProducts(prodSelected.getProdId(), suppselected.getSuppId());
 					}
 						
-				}); 
+				}; 
 				
-				
+				tvProdAvailable.getSelectionModel().selectedItemProperty().addListener(supplierProducts);
 			
 				
 			
-		
+				tvSuppliers.getSelectionModel().selectFirst();
 	}
 	
 	//Product prodSelected = tvProdAvailable.getSelectionModel().getSelectedItem();
@@ -165,6 +167,10 @@ public class SupplierController implements Initializable {
 		TravelXDB.GetOfferedProducts(suppselected.getSuppId());
 		
 		
+		//Turning off change listener when a supplier changes products available
+		offeredAvailableTableUpdate (suppselected);
+		
+		addRemoveSupplierButtons();
 	}
 	
 	@FXML void removeOffered(ActionEvent event)
@@ -175,6 +181,10 @@ public class SupplierController implements Initializable {
 		
 		TravelXDB.RemoveOfferProducts(prodSelected.getProdId(), suppselected.getSuppId());
 		
+		//Turning off change listener when a supplier changes products available
+		offeredAvailableTableUpdate (suppselected);
+		
+		addRemoveSupplierButtons();
 	}
 
 	
@@ -186,6 +196,12 @@ public class SupplierController implements Initializable {
 		
 		updateTVSuppliers ();
 		txtSuppliers.setText("");
+		
+		tvSuppliers.getSelectionModel().selectLast();
+		tvSuppliers.scrollTo(tvSuppliers.getItems().size()-1);
+		
+		//needs to be here because new suppliers have no products to begin with
+		addRemoveSupplierButtons();
 	}
 	
 	@FXML void deleteSupplier(ActionEvent event)
@@ -194,20 +210,36 @@ public class SupplierController implements Initializable {
 		TravelXDB.DeleteProductsSupplier(selected.getSuppId());
 		TravelXDB.DeleteSupplier(selected.getSuppId());
 		
+		
+		//Turning off change listener when a supplier changes products available
+		offeredAvailableTableUpdate (selected);
+		
 		updateTVSuppliers ();
 		txtSuppliers.setText("");
+		
+		tvSuppliers.getSelectionModel().selectFirst();
+		tvSuppliers.scrollTo(0);
 	}
 	
 	@FXML void updateSupplier(ActionEvent event)
 	{
 		Supplier selected = tvSuppliers.getSelectionModel().getSelectedItem();
 		String updateName = txtSuppliers.getText();
+		
+		int index = tvSuppliers.getSelectionModel().getFocusedIndex();
+		
 		TravelXDB.UpdateSupplier(selected.getSuppId(), updateName);
 		
 		updateTVSuppliers ();
 		txtSuppliers.setText("");
+		
+		tvSuppliers.getSelectionModel().select(index);
+		tvSuppliers.scrollTo(index);
 	}
 	
+	/*
+	 * Turns off supplierSelected change listener temporarily for tvSuppliers to update.
+	 */
 	private void updateTVSuppliers ()
 	{
 		tvSuppliers.getSelectionModel().selectedItemProperty().removeListener(supplierSelected);
@@ -215,4 +247,44 @@ public class SupplierController implements Initializable {
 		tvSuppliers.getSelectionModel().selectedItemProperty().addListener(supplierSelected);
 	}
 
+	/*
+	 * Turns off supplierProduct change listener temporarily for tvProdAvailable and tvProdOffer to update.
+	 */
+	private void offeredAvailableTableUpdate (Supplier sup)
+	{
+		tvProdAvailable.getSelectionModel().selectedItemProperty().removeListener(supplierProducts);
+		tvProdAvailable.setItems(TravelXDB.GetAvailableProducts(sup.getSuppId()));
+		tvProdAvailable.getSelectionModel().selectedItemProperty().addListener(supplierProducts);
+		
+		tvProdOffer.getSelectionModel().selectedItemProperty().removeListener(supplierProducts);
+		tvProdOffer.setItems(TravelXDB.GetOfferedProducts(sup.getSuppId()));
+		tvProdOffer.getSelectionModel().selectedItemProperty().addListener(supplierProducts);
+	}
+	
+	/*
+	 * Disables the add and remove buttons on the window so that empty available or empty offered tables can't add to the other
+	 */
+	private void addRemoveSupplierButtons()
+	{
+		if (tvProdOffer.getItems().size() <= 0 && tvProdAvailable.getItems().size() > 0)
+		{
+			btnProdRemove.setDisable(true);
+			btnProdAdd.setDisable(false);
+		}
+		else if (tvProdOffer.getItems().size() > 0 && tvProdAvailable.getItems().size() <= 0)
+		{
+			btnProdRemove.setDisable(false);
+			btnProdAdd.setDisable(true);
+		}
+		else if (tvProdOffer.getItems().size() <= 0 && tvProdAvailable.getItems().size() <= 0)
+		{
+			btnProdRemove.setDisable(true);
+			btnProdAdd.setDisable(true);
+		}
+		else 
+		{
+			btnProdRemove.setDisable(false);
+			btnProdAdd.setDisable(false);
+		}
+	}
 }

@@ -75,7 +75,7 @@ public class ProductController implements Initializable {
 		};
 		tvProducts.getSelectionModel().selectedItemProperty().addListener(productItemSelected);
 			
-		
+		tvProducts.getSelectionModel().selectFirst();
 	}
 
 	@FXML void addNewProduct(ActionEvent event)
@@ -88,6 +88,7 @@ public class ProductController implements Initializable {
 		updateTVProducts();
 		
 		tvProducts.getSelectionModel().selectLast();
+		tvProducts.scrollTo(tvProducts.getItems().size()-1);
 	}
 	
 	@FXML void deleteProduct(ActionEvent event)
@@ -99,6 +100,7 @@ public class ProductController implements Initializable {
 		updateTVProducts();
 		
 		tvProducts.getSelectionModel().selectFirst();
+		tvProducts.scrollTo(0);
 	}
 	@FXML void updateProduct(ActionEvent event)
 	{
@@ -113,6 +115,7 @@ public class ProductController implements Initializable {
 		
 		
 		tvProducts.getSelectionModel().select(index);
+		tvProducts.scrollTo(index);
 	}
 	
 	private void updateTVProducts()

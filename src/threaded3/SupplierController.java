@@ -9,13 +9,22 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * 
+ * @author  Craig MacRitchie and Kevin Yan
+ * 
+ * CRUD operations on the Supplier table for Supplier Scene
+ *
+ */
 public class SupplierController implements Initializable {
 	
 	//declare list of suppliers
@@ -94,6 +103,8 @@ public class SupplierController implements Initializable {
 				Supplier SupplierSelected = tvSuppliers.getSelectionModel().getSelectedItem();
 				System.out.println(SupplierSelected);
 				
+				
+				
 				//listeners made global
 				//Supplier suppselected  = new Supplier(); //tvSuppliers.getSelectionModel().getSelectedItem();
 				//Product prodSelected = null; //tvProdAvailable.getSelectionModel().getSelectedItem();
@@ -122,6 +133,8 @@ public class SupplierController implements Initializable {
 						
 						
 						txtSuppliers.setText(suppselected.getSuppName());
+						tvProdOffer.getSelectionModel().selectFirst();
+						tvProdAvailable.getSelectionModel().selectFirst();
 					}
 					
 				};
@@ -147,6 +160,8 @@ public class SupplierController implements Initializable {
 				
 			
 				tvSuppliers.getSelectionModel().selectFirst();
+				tvProdOffer.getSelectionModel().selectFirst();
+				tvProdAvailable.getSelectionModel().selectFirst();
 	}
 	
 	//Product prodSelected = tvProdAvailable.getSelectionModel().getSelectedItem();
@@ -171,6 +186,8 @@ public class SupplierController implements Initializable {
 		offeredAvailableTableUpdate (suppselected);
 		
 		addRemoveSupplierButtons();
+		tvProdOffer.getSelectionModel().selectFirst();
+		tvProdAvailable.getSelectionModel().selectFirst();
 	}
 	
 	@FXML void removeOffered(ActionEvent event)
@@ -185,12 +202,24 @@ public class SupplierController implements Initializable {
 		offeredAvailableTableUpdate (suppselected);
 		
 		addRemoveSupplierButtons();
+		tvProdOffer.getSelectionModel().selectFirst();
+		tvProdAvailable.getSelectionModel().selectFirst();
 	}
 
 	
 	@FXML void addSupplier(ActionEvent event)
 	{
+		int clone = 0;
 		String newSupplier = txtSuppliers.getText();
+		for (Supplier sup : supplierList) {
+		    if(sup.getSuppName().equals(newSupplier))
+		    {	
+		    	clone++;
+		    }   
+		}
+		
+		if(validator() && clone == 0)
+		{
 		
 		TravelXDB.AddSupplier(newSupplier);
 		
@@ -202,6 +231,13 @@ public class SupplierController implements Initializable {
 		
 		//needs to be here because new suppliers have no products to begin with
 		addRemoveSupplierButtons();
+		tvProdOffer.getSelectionModel().selectFirst();
+		tvProdAvailable.getSelectionModel().selectFirst();
+		}
+		else
+		{
+			AlertNotify();
+		}
 	}
 	
 	@FXML void deleteSupplier(ActionEvent event)
@@ -219,10 +255,23 @@ public class SupplierController implements Initializable {
 		
 		tvSuppliers.getSelectionModel().selectFirst();
 		tvSuppliers.scrollTo(0);
+		tvProdOffer.getSelectionModel().selectFirst();
+		tvProdAvailable.getSelectionModel().selectFirst();
 	}
 	
 	@FXML void updateSupplier(ActionEvent event)
 	{
+		int clone = 0;
+		String newSupplier = txtSuppliers.getText();
+		for (Supplier sup : supplierList) {
+		    if(sup.getSuppName().equals(newSupplier))
+		    {	
+		    	clone++;
+		    }   
+		}
+		
+		if(validator() && clone <= 1)
+		{
 		Supplier selected = tvSuppliers.getSelectionModel().getSelectedItem();
 		String updateName = txtSuppliers.getText();
 		
@@ -235,6 +284,13 @@ public class SupplierController implements Initializable {
 		
 		tvSuppliers.getSelectionModel().select(index);
 		tvSuppliers.scrollTo(index);
+		tvProdOffer.getSelectionModel().selectFirst();
+		tvProdAvailable.getSelectionModel().selectFirst();
+		}
+		else
+		{
+			AlertNotify();
+		}
 	}
 	
 	/*
@@ -245,6 +301,29 @@ public class SupplierController implements Initializable {
 		tvSuppliers.getSelectionModel().selectedItemProperty().removeListener(supplierSelected);
 		tvSuppliers.setItems(TravelXDB.GetAllSuppliers());
 		tvSuppliers.getSelectionModel().selectedItemProperty().addListener(supplierSelected);
+	}
+	
+	private void AlertNotify()
+	{
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setHeaderText("Supplier Name");
+		alert.setContentText("The Supplier name cannot be left blank and must be unique!");
+
+		alert.showAndWait();
+	}
+	
+	//checks to make sure that the product name was not left blank
+	private boolean validator()
+	{
+		String read = txtSuppliers.getText();
+		
+		if (read.length() > 0)
+			return true;
+		else
+			return false;
+			
+		
 	}
 
 	/*

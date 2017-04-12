@@ -10,16 +10,25 @@ import javafx.collections.ObservableList;
 
 //import application.Agent;
 
+/**
+ * 
+ * @author : Craig MacRitchie and Kevin Yan
+ * 
+ * Main Interface for the Travel Experts Database and it's tables.
+ * 	Most importantly - Products, Packages, Suppliers, ProductSuppliers.
+ *
+ */
 public class TravelXDB {
 
 
+	//database connection string
 	static String url = "jdbc:mysql://localhost:3306/travelexperts"; //connection
 	static String username = "root"; //user name default
 	static String password = ""; //password, default
 
 
 
-//vectors 396 & 397 in Java book Drop down combo box
+	//vectors 396 & 397 in Java book Drop down combo box
 	//This method gets all the Packages
 	public static ObservableList<Packages> GetAllPackages() //List<Packages> GetALLPackages()
 	{
@@ -97,39 +106,6 @@ public class TravelXDB {
 	
 	
 	
-	
-	
-	
-	/*
-	
-	//gets linking Packages
-	public static List<PPS> getPPS(int packageid)
-	{
-		List<PPS> ppsList = new ArrayList<PPS>();
-		PPS link =null;
-		try(Connection connection = DriverManager.getConnection(url, username, password))
-		{
-			String selectLinks ="select * From Packages_Products_Suppliers where PackageId = ?";
-			PreparedStatement selectState = connection.prepareStatement(selectLinks);
-			selectState.setInt(1, packageid);
-			
-			ResultSet resreader = selectState.executeQuery();
-			
-			while(resreader.next())
-			{
-				link = new PPS(resreader.getInt(1), resreader.getInt(2));
-				ppsList.add(link);
-			}
-			
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-		System.out.println(ppsList);
-		return ppsList;
-	} */
-	
 	//gets product and suppliers that are associated with the package
 	public static ObservableList<ProductSupplier> getPSNamed(int packageid)
 	{
@@ -201,54 +177,14 @@ public class TravelXDB {
 			return selectedPackage;
 		}
 		
-		//add new Package
-		
-		public static void AddPackage(String packageName, String startDate, String endDate, String Description, double BasePrice, double commision )
-		{
-			try(Connection connection = DriverManager.getConnection(url, username, password))
-			{
-			String addPackage = "INSERT"; //finish sql string
 			
-			PreparedStatement addState = connection.prepareStatement(addPackage);
-			//addState.setString(1,  );
-			//addState.setString(1,  );
-			//addState.setString(1,  );
-			//addState.setString(1,  );
-			//addState.setString(1,  );
-			//addState.setString(1,  );
-			//addState.setString(1,  );
-				
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-					
-		}
-		
 		//update Package
 		public static void UpdatePackage()
 		{
 			
 		}
 		
-		//Delete Package
-		public static void DeletePackage(int packageid)
-		{
-			try(Connection connection = DriverManager.getConnection(url, username, password))
-			{
-				String deletePackage = "DELETE FROM Packages WHERE PackageId =?";
-				
-				PreparedStatement deleteState = connection.prepareStatement(deletePackage);
-				deleteState.setInt(1, packageid);
-				deleteState.executeUpdate();
-				System.out.println("package deleted");
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		
 		
 		
 		//Suppliers This portion handles all the method for the suppliers scene
@@ -365,7 +301,7 @@ public class TravelXDB {
 				PreparedStatement deleteState = connection.prepareStatement(deletePS);
 				deleteState.setInt(1, supplierid);
 				deleteState.executeUpdate();
-				System.out.println("check 8");
+				
 			}
 			catch (SQLException e)
 			{
@@ -374,6 +310,34 @@ public class TravelXDB {
 			}
 		}
 		
+		/**
+		 * deletes selected package
+		 * @param packageid - selected package's id
+		 */
+		public static void DeletePackage(int packageid)
+		{
+			try(Connection connection = DriverManager.getConnection(url, username, password))
+			{
+				String deletePack = "DELETE FROM Packages " +
+									"WHERE PackageId = ?";
+				PreparedStatement deleteState = connection.prepareStatement(deletePack);
+				deleteState.setInt(1, packageid);
+				deleteState.executeUpdate();
+				//System.out.println("deleted888888");
+				
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		/**
+		 * Updates the supplier relation to a package
+		 * 
+		 * @param supplierid
+		 * @param supplierName
+		 */
 		public static void UpdateSupplier(int supplierid, String supplierName)
 		{
 			try(Connection connection = DriverManager.getConnection(url, username, password))
@@ -667,7 +631,59 @@ public static void RemoveOfferProducts(int productid, int supplierid)
 	}
 	//return true;
 }
+/**
+ * Insert new package into Package table with all fields initialized
+ * 
+ */
+public static void AddPackage(String pkgname, Date strtdate, Date enddate, String PkgDesc, double pkgBasePrice, double pkgAgencyCommission) throws SQLException
+{
+	Connection connection = DriverManager.getConnection(url, username, password);
+	
+		String addPackage = "insert into " +
+							"Packages (PkgName, PkgStartDate, PkgEndDate, PkgDesc, PkgBasePrice, PkgAgencyCommission) " +
+							"Values(?, ?, ?, ?, ?, ? )";
+		PreparedStatement addState = connection.prepareStatement(addPackage);
+		addState.setString(1, pkgname);
+		addState.setDate(2, strtdate);
+		addState.setDate(3, enddate);
+		addState.setString(4, PkgDesc);
+		addState.setDouble(5, pkgBasePrice);
+		addState.setDouble(6, pkgAgencyCommission);
+		addState.executeUpdate();
+}
 
+/**
+ * 
+ * Update a package by all it's fields
+ */
+public static void UpdatePackage(int packageid, String pkgname, Date strtdate, Date enddate, String PkgDesc, double pkgBasePrice, double pkgAgencyCommission) 
+{
+	try (Connection connection = DriverManager.getConnection(url, username, password))
+	{
+	
+	String updatePackage = "UPDATE Packages SET PkgName =?, " +
+											"PkgStartDate =?, " +
+											"PkgEndDate = ?, " +
+											"PkgDesc = ?, " +
+											"PkgBasePrice = ?, " +
+											"PkgAgencyCommission =? " +
+											"WHERE PackageId = ?";
+	PreparedStatement updateState = connection.prepareStatement(updatePackage);
+	updateState.setString(1, pkgname);
+	updateState.setDate(2, strtdate);
+	updateState.setDate(3, enddate);
+	updateState.setString(4, PkgDesc);
+	updateState.setDouble(5,  pkgBasePrice);
+	updateState.setDouble(6, pkgAgencyCommission);
+	updateState.setInt(7,  packageid);
+	updateState.executeUpdate();
+	}
+	catch (SQLException e)
+	{
+		e.printStackTrace();
+	}
+	
+}
 
 	
 }

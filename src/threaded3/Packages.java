@@ -1,3 +1,7 @@
+/*
+ * Package class
+ */
+
 package threaded3;
 
 import java.text.SimpleDateFormat;
@@ -12,15 +16,9 @@ public class Packages {
 	private String PkgName;
 	private String PkgStartDate;
 	private String PkgEndDate;
-	//private Date PkgStartDate;
-	//private Date PkgEndDate;
 	private String PkgDesc;
 	private double PkgBasePrice;
 	private double PkgAgencyCommision;
-	
-	//private SimpleDateFormat PkgStartDate;
-
-	
 	
 	//constructor
 	public Packages(int packgeId, String pkgName, String pkgStartDate, String pkgEndDate, String pkgDesc,

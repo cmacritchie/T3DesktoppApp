@@ -2,6 +2,13 @@ package threaded3;
 
 import javafx.collections.ObservableList;
 
+/**
+ * 
+ * @author  Craig MacRitchie and Kevin Yan
+ * 
+ * ProductSupplier relation table entity operations
+ *
+ */
 public class ProductSupplier {
 
 	//fields
@@ -10,7 +17,6 @@ public class ProductSupplier {
 	private int SuppId; // supplier id
 	private String ProdName;
 	private String SuppName;
-	//private int PackageId;  //added late
 	
 	
 	
@@ -71,13 +77,6 @@ public class ProductSupplier {
 		SuppName = suppName;
 	}
 	
-//	public int getPackageId() {
-//		return PackageId;
-//	}
-	
-//	public void setPackageId(int packageid) {
-//		PackageId =packageid;
-//	}
 
 
 	//toString method... just in case

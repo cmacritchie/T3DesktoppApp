@@ -1,3 +1,13 @@
+/*Author: Craig MacRitchie & Kevin Yan
+ * Date: April12,2017
+ * Project: ThreadedProject 3
+ * Description: This Java project does applies
+ * CRUD operations to the products, Suppliers and Packages
+ * Tables, with a user-friendly interface
+ * 
+ * 
+ */
+
 package threaded3;
 	
 import javafx.application.Application;

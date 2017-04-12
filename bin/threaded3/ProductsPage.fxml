@@ -21,8 +21,7 @@
                                  <children>
                                     <TableView id="tvProducts" fx:id="tvProducts" layoutX="3.0" prefHeight="433.0" prefWidth="200.0">
                                        <columns>
-                                          <TableColumn id="productId" fx:id="productID" prefWidth="75.0" text="Prod Id" />
-                                          <TableColumn id="productName" fx:id="productName" prefWidth="75.0" text="Product Name" />
+                                          <TableColumn id="productName" fx:id="productName" prefWidth="199.0" text="Product " />
                                        </columns>
                                     </TableView>
                                  </children>

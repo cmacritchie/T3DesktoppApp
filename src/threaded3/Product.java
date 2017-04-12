@@ -1,6 +1,14 @@
 package threaded3;
 
-public class Product {
+/**
+ * 
+ * @author Craig MacRitchie and Kevin Yan
+ * 
+ * Represents Product table on in the database
+ *
+ */
+public class Product
+{
 
 	//fields
 	private int ProdId;

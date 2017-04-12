@@ -1,6 +1,14 @@
 package threaded3;
 
-public class Supplier {
+/**
+ * 
+ * @author  Craig MacRitchie and Kevin Yan
+ * 
+ * Represents the items in the Supplier table with getter and setters
+ *
+ */
+public class Supplier 
+{
 
 	//fields
 	private int SuppId;

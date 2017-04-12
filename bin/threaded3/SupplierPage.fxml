@@ -21,8 +21,7 @@
                                  <children>
                                     <TableView id="tvSuppliers" fx:id="tvSuppliers" layoutX="3.0" prefHeight="433.0" prefWidth="200.0">
                                        <columns>
-                                          <TableColumn id="supplierId" fx:id="supplierId" prefWidth="75.0" text="SupplierId" />
-                                          <TableColumn id="supplierName" fx:id="supplierName" prefWidth="75.0" text="SupplierName" />
+                                          <TableColumn id="supplierName" fx:id="supplierName" prefWidth="199.0" text="SupplierName" />
                                        </columns>
                                     </TableView>
                                  </children>
@@ -44,14 +43,12 @@
                                              <children>
                                                 <TableView id="tvProdOffer" fx:id="tvProdOffer" layoutX="46.0" layoutY="14.0" prefHeight="228.0" prefWidth="237.0">
                                                    <columns>
-                                                      <TableColumn fx:id="productOfferId" prefWidth="75.0" text="C1" />
-                                                      <TableColumn fx:id="prodOfferNameName" prefWidth="75.0" text="Products Offered" />
+                                                      <TableColumn fx:id="prodOfferNameName" prefWidth="236.0" text="Products Offered by Supplier" />
                                                    </columns>
                                                 </TableView>
                                                 <TableView id="tvProdAvailable" fx:id="tvProdAvailable" layoutX="446.0" layoutY="14.0" prefHeight="228.0" prefWidth="226.0">
                                                    <columns>
-                                                      <TableColumn fx:id="prodAvailable" prefWidth="75.0" text="Products Available" />
-                                                      <TableColumn fx:id="prodAvailableName" prefWidth="75.0" text="C2" />
+                                                      <TableColumn fx:id="prodAvailableName" prefWidth="225.0" text="Products Not Offered By Supplier" />
                                                    </columns>
                                                 </TableView>
                                                 <Button id="btnProdAdd" fx:id="btnProdAdd" layoutX="339.0" layoutY="54.0" mnemonicParsing="false" onAction="#addAvailable" text="&lt;=" />
